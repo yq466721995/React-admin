@@ -139,7 +139,7 @@ class LeftNav extends Component {
                 <Link to='/' className="left-nav">
                     <header className="left-nav-header">
                         <img src={Logo} alt="logo" />
-                        <h1>叶秋后台</h1>
+                        <h1>后台管理</h1>
                     </header>
                 </Link>
 
