@@ -3,12 +3,14 @@
 */
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom';
-import { Menu } from 'antd';
+import { Menu } from 'antd'
+import {connect} from 'react-redux'
 
 import Logo from '../../assets/images/logo.png'
 import menuList from '../../config/menuConfig'
-import memoryUtils from '../../utils/memoryUtils'
+// import memoryUtils from '../../utils/memoryUtils'
 import './index.less'
+import {setHeadTitle} from '../../redux/actions'
 
 const { SubMenu } = Menu;
 
@@ -16,8 +18,8 @@ class LeftNav extends Component {
 
     hasAuth = (item) => {
         const { key,isPublic } = item
-        const menus = memoryUtils.user.role.menus
-        const username = memoryUtils.user.username
+        const menus = this.props.user.role.menus
+        const username = this.props.user.username
         /* 
             1. 当前用户是admin
             2. 当期item是公开的
@@ -51,9 +53,20 @@ class LeftNav extends Component {
            //如果当前用户有item的对应权限，才需要显示对应的菜单项
             if(this.hasAuth(item)){
                 if(!item.children){
+                    //判断item是否是当前对应的item
+                    if(item.key===path || path.indexOf(item.key)===0){
+                        //更新redux中的headTitle的状态
+                        this.props.setHeadTitle(item.title)
+                    }
+
                     pre.push((
                          <Menu.Item key={item.key} icon={item.icon}>
-                             <Link to={item.key}>{item.title}</Link>
+                            <Link 
+                                to={item.key} 
+                                onClick={() => this.props.setHeadTitle(item.title)}
+                            >
+                                {item.title}
+                            </Link>
                          </Menu.Item>
                     ))
                 }else{
@@ -176,4 +189,7 @@ class LeftNav extends Component {
     }
 }
 
-export default withRouter(LeftNav)
+export default connect(
+    state => ({user: state.user}),
+    {setHeadTitle}
+)(withRouter(LeftNav))

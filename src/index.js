@@ -3,12 +3,13 @@
 */
 import React from 'react'
 import ReactDom from 'react-dom'
+import {Provider} from 'react-redux'
 
 import App from './App'
-import memoryUtils from '../src/utils/memoryUtils'
-import storageUtils from '../src/utils/storageUtils'
+import store from './redux/store'
 
-//  读取local中保存的user，保存在内存中
-const user = storageUtils.getUser()
-memoryUtils.user = user
-ReactDom.render(<App />, document.getElementById('root'))
+ReactDom.render((
+    <Provider store={store}>
+        <App />
+    </Provider>
+), document.getElementById('root'))

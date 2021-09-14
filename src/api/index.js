@@ -27,6 +27,9 @@ export const reqCategory = (categoryId) => ajax( BASE + '/manage/category/info',
 //获取商品分页列表
 export const reqProducts = (pageNum, pageSize) => ajax( BASE + '/manage/product/list',{pageNum, pageSize})
 
+//获取所有商品
+export const reqTotalProducts = () => ajax( BASE + '/manage/product/total' )
+
 //更新商品状态(上架/下架)
 export const reqUpdateStatus = (productId, status) => ajax( BASE + '/manage/product/updateStatus', {productId, status}, 'POST')
 

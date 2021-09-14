@@ -66,7 +66,7 @@ export default class ProductDetail extends Component {
 
     render() {
         //读取携带的state数据
-        const {name, desc, price, detail, imgs} = this.props.location.state.product
+        const {name, desc, price, detail, imgs, sales, inventory} = this.props.location.state.product
         // console.log(imgs)
         const {cName1, cName2} = this.state
 
@@ -95,6 +95,14 @@ export default class ProductDetail extends Component {
                     <Item>
                         <span className='left'>商品价格：</span>
                         <span>{price}元</span>
+                    </Item>
+                    <Item>
+                        <span className='left'>商品销量：</span>
+                        <span>{sales}</span>
+                    </Item>
+                    <Item>
+                        <span className='left'>商品库存：</span>
+                        <span>{inventory}</span>
                     </Item>
                     <Item>
                         <span className='left'>所属分类：</span>

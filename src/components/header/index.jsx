@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import { Modal } from 'antd'
+import {connect} from 'react-redux'
 
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { formateDate } from '../../utils/dateUtils'
-import memoryUtils from '../../utils/memoryUtils'
-import storageUtils from '../../utils/storageUtils'
-import menuList from '../../config/menuConfig'
+// import menuList from '../../config/menuConfig'
 import LinkButton from '../link-button'
+import {logout} from '../../redux/actions'
 
 import './index.less'
 
@@ -31,7 +31,7 @@ class Header extends Component {
     /* 
         获取当前标题
     */
-    getTitle = () => {
+    /* getTitle = () => {
         //得到当前请求路径
         const path = this.props.location.pathname
         let title
@@ -49,7 +49,7 @@ class Header extends Component {
             }
         })
         return title
-    }
+    } */
 
     /* 
         退出登录
@@ -63,12 +63,7 @@ class Header extends Component {
             okText: '确定',
             cancelText: '取消',
             onOk: () => {
-              //删除保存的user数据
-                storageUtils.removeUser()
-                memoryUtils.user = {}
-
-                //跳转到login
-                this.props.history.replace('/login')
+              this.props.logout()
             },
         })
     }
@@ -92,10 +87,11 @@ class Header extends Component {
     render() {
 
         const { currentTime } = this.state
-        const username = memoryUtils.user.username
+        const username = this.props.user.username
 
         //得到当前需要显示的title
-        const title = this.getTitle()
+        // const title = this.getTitle()
+        const title = this.props.headTitle
 
         return (
             <div className="header">
@@ -113,4 +109,7 @@ class Header extends Component {
         )
     }
 }
-export default withRouter(Header)
+export default connect(
+    state => ({headTitle: state.headTitle, user: state.user}),
+    {logout}
+)(withRouter(Header))
