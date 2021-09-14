@@ -9,11 +9,10 @@ import {
 import {
     PlusOutlined,
     ArrowRightOutlined,
-    ExclamationCircleOutlined 
 } from '@ant-design/icons'
 
 import LinkButton from '../../components/link-button'
-import {reqCategorys, reqUpdateCategory, reqAddCategory, reqDeleteCategory} from '../../api'
+import {reqCategorys, reqUpdateCategory, reqAddCategory} from '../../api'
 import AddForm from './add-form'
 import UpdateForm from './update-form'
 /* 
@@ -45,7 +44,7 @@ export default class Category extends Component {
                       <LinkButton onClick={() => this.showUpdate(category)}>修改分类</LinkButton>
                       {/* 如何向事件回调函数传递参数：先定义一个匿名函数，在函数中调用处理的函数并传入数据 */}
                       {this.state.parentId === '0' ? <LinkButton onClick={ () => this.showSubCategorys(category) }>查看子分类</LinkButton> : null}
-                      <LinkButton onClick={() => this.deleteCategory(category) }>删除分类</LinkButton>
+                      {/* <LinkButton onClick={() => this.deleteCategory(category) }>删除分类</LinkButton> */}
                   </span>
               )
             },
@@ -116,7 +115,7 @@ export default class Category extends Component {
         })
     }
 
-    deleteCategory = (category) => {
+    /* deleteCategory = (category) => {
         const {_id} = category
         Modal.confirm({
             title: '删除分类',
@@ -135,7 +134,7 @@ export default class Category extends Component {
                 }
             },
         })
-    }
+    } */
     
     //显示删除分类
     /* showDeleteCategory = (category) => {

@@ -16,7 +16,7 @@ export const reqCategorys = (parentId) => ajax( BASE + '/manage/category/list', 
 export const reqAddCategory = (parentId, categoryName) => ajax( BASE + 'manage/category/add', {parentId, categoryName}, 'POST')
 
 //删除分类
-export const reqDeleteCategory = (categoryId) => ajax( BASE + '/manage/category/delete',{categoryId}, 'POST')
+/* export const reqDeleteCategory = (categoryId) => ajax( BASE + '/manage/category/delete',{categoryId}, 'POST') */
 
 //更新分类
 export const reqUpdateCategory = ({categoryId, categoryName}) => ajax( BASE + '/manage/category/update', {categoryId, categoryName}, 'POST')
