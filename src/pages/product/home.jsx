@@ -23,7 +23,7 @@ const Option = Select.Option
 export default class ProductHome extends Component {
 
     state = {    
-        total: 0,   //商品的总数量
+        total: 0,   //商品类型的总数量
         products: [],    //商品的数据
         loading: false, //是否正在加载中
         searchName: '', //搜索的关键字
@@ -44,6 +44,14 @@ export default class ProductHome extends Component {
               title: '价格',
               dataIndex: 'price',
               render : (price) => '￥' + price   //当前指定了对应的属性，传入的是对应的属性值
+            },
+            {
+                title: '销量',
+                dataIndex: 'sales',
+            },
+            {
+                title: '库存',
+                dataIndex: 'inventory'
             },
             {
                 width: 100,
@@ -112,6 +120,7 @@ export default class ProductHome extends Component {
                 total,
                 products: list
             })
+            console.log(list)
         }
     }
 

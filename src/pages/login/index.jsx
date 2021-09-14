@@ -3,14 +3,13 @@
 */
 import React, {Component} from 'react'
 import { Redirect } from 'react-router-dom'
-import { Form, Input, Button, message } from 'antd'
+import { Form, Input, Button } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
+import {connect} from 'react-redux'
 
 import './login.less'
 import Logo from '../../assets/images/logo.png'
-import {reqLogin} from '../../api/index'
-import memoryUtils from '../../utils/memoryUtils'
-import storageUtils from '../../utils/storageUtils'
+import {login} from '../../redux/actions' 
 const Item = Form.Item
 
 class Login extends Component{
@@ -24,26 +23,11 @@ class Login extends Component{
         form.validateFields().then( async(values) =>{　　// 如果全部字段通过校验，会走then方法，里面可以打印出表单所有字段（一个object）
             // console.log('成功',values)
             const {username, password} = values
-            const response = await reqLogin(username, password)
-            const result = response.data
-            if(result.status === 0){    //登录成功
-                message.success('登录成功')
-                // console.log('请求成功',result)
-
-                //保存user
-                const user = result.data
-                memoryUtils.user = user //保存在内存中
-                storageUtils.saveUser(user) //保存在local中
-
-                //跳转到管理界面
-                this.props.history.replace('/')
-            }else{//登录失败
-                message.error(result.msg)
-                // console.log('登录失败',result)
-            }
+            //调用分发异步action的函数 => 发登录的异步请求，有了结果后更新状态
+            this.props.login(username, password)
           })
           .catch( err =>{　　// 如果有字段没通过校验，会走catch，里面可以打印所有校验失败的信息
-            message.error(err)
+            // message.error(err)
             // console.log('检验失败', err)
           })  
           
@@ -97,10 +81,13 @@ class Login extends Component{
 
         /* 判断用户是否登录 */
         //如果用户已经登录，自动跳转到管理界面
-        const user = memoryUtils.user
+        const user = this.props.user
         if(user && user._id){
-            return <Redirect to='/' />
+            return <Redirect to='/home' />
         }
+
+        //如果登录失败的信息
+        // const errorMsg = this.props.user.errorMsg
 
         return(
             <div className='login'>
@@ -109,6 +96,11 @@ class Login extends Component{
                     <h1>React项目：后台管理系统</h1>
                 </header>
                 <section className='login-content'>
+                    <div 
+                        className={user.errorMsg ? 'error-msg show' : 'error-msg'}
+                    >
+                        {user.errorMsg}
+                    </div>
                     <h2>用户登录</h2>
                     <Form
                         ref={this.formRef}
@@ -174,4 +166,7 @@ class Login extends Component{
     高阶组件
 */
 
-export default Login
+export default connect(
+    state => ({user: state.user}),
+    {login}
+)(Login)

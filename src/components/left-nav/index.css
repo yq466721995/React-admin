@@ -5,8 +5,9 @@
   height: 80px;
 }
 .left-nav .left-nav-header img {
-  width: 80px;
-  height: 80px;
+  margin: 0 10px;
+  width: 50px;
+  height: 50px;
 }
 .left-nav .left-nav-header h1 {
   margin-bottom: 0;

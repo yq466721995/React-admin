@@ -104,6 +104,28 @@ export default class ProductAddUpdate extends Component {
     }
 
     /* 
+        验证销量的自定义验证
+    */
+    validateSales = (rule, value) => {
+        if(value*1 < 0){
+            return Promise.reject(new Error('销量不能小于0！'))
+        }else{
+            return Promise.resolve()    //验证通过
+        }
+    }
+
+    /* 
+        验证库存的自定义验证
+    */
+    validateInventory = (rule, value) => {
+        if(value*1 < 0){
+            return Promise.reject(new Error('库存不能小于0！'))
+        }else{
+            return Promise.resolve()    //验证通过
+        }
+    }
+    
+    /* 
         用来加载下一级列表的回调函数
     */
     loadData = async selectedOptions => {
@@ -143,7 +165,7 @@ export default class ProductAddUpdate extends Component {
         form.validateFields().then(async value => {
 
             //1.收集数据,并封装成product对象
-            const {name, desc, price, categoryIds} = value
+            const {name, desc, price, categoryIds, sales, inventory} = value
             let categoryId, pCategoryId
             if(categoryIds.length===1){
                 pCategoryId = '0'
@@ -154,7 +176,7 @@ export default class ProductAddUpdate extends Component {
             }
             const imgs = this.pw.current.getImgs()
             const detail = this.editor.current.getDetail()
-            const product = {name, desc, price, imgs, detail, pCategoryId, categoryId}
+            const product = {name, desc, price, sales, inventory, imgs, detail, pCategoryId, categoryId}
 
             //如果是更新需要添加_id
             if(this.isUpdate){
@@ -258,6 +280,28 @@ export default class ProductAddUpdate extends Component {
                         ]}
                     >
                         <Input type='number' placeholder='请输入商品价格' addonAfter='元' allowClear />
+                    </Item>
+                    <Item 
+                        label='商品销量:'
+                        name='sales'
+                        initialValue={product.sales}
+                        rules={[
+                            {required: true, message: '必须输入商品销量'},
+                            {validator: this.validateSales}
+                        ]}
+                    >
+                        <Input type='number' placeholder='请输入商品销量' allowClear />
+                    </Item>
+                    <Item 
+                        label='商品库存:'
+                        name='inventory'
+                        initialValue={product.inventory}
+                        rules={[
+                            {required: true, message: '必须输入商品库存'},
+                            {validator: this.validateInventory}
+                        ]}
+                    >
+                        <Input type='number' placeholder='请输入商品库存' allowClear />
                     </Item>
                     <Item 
                         label='商品分类:'
