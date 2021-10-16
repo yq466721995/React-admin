@@ -96,7 +96,6 @@ class Login extends Component{
                     <h1>React项目：后台管理系统</h1>
                 </header>
                 <section className='login-content'>
-                    {/*用户登录出错的错误提示*/}
                     <div 
                         className={user.errorMsg ? 'error-msg show' : 'error-msg'}
                     >
