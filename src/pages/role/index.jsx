@@ -6,11 +6,12 @@ import {
     Modal,
     message
 } from 'antd'
+import {ExclamationCircleOutlined} from '@ant-design/icons'
 import {connect} from 'react-redux' 
 
 import { PAGE_SIZE } from '../../utils/constants'
-import { reqRoles, reqAddRole, reqUpdateRole } from '../../api/index'
-import AddForm from './add-form'
+import {reqRoles, reqAddRole, reqUpdateRole, reqDeleteRole} from '../../api/index'
+import AddUpdate from './add-update'
 import AuthForm from './auth-form'
 import {formateDate} from '../../utils/dateUtils'
 import {logout} from '../../redux/actions'
@@ -24,6 +25,7 @@ class Role extends Component {
         role: {},    //选中的role
         isShowAdd: false,   //是否显示添加界面
         isShowAuth: false,  //是否显示设置权限界面
+        loading: false  //加载效果
     }
 
     constructor(props){
@@ -69,8 +71,12 @@ class Role extends Component {
 
     //获取角色列表
     getRoles = async () => {
+        //启动加载效果
+        this.setState({loading:true})
         const response = await reqRoles()
         const result = response.data
+        //关闭加载效果
+        this.setState({loading:false})
         if(result.status===0){
             const roles = result.data
             this.setState({
@@ -153,6 +159,28 @@ class Role extends Component {
         }
     }
 
+    //删除用户
+    deleteRole = (role) =>{
+        const {_id} = role
+        Modal.confirm({
+            title: `删除角色`,
+            icon: <ExclamationCircleOutlined />,
+            content: '确定删除吗？',
+            okText: '确定',
+            cancelText: '取消',
+            onOk: async () => {
+                const response = await reqDeleteRole(_id)
+                const result = response.data
+                if(result.status===0){
+                    message.success(`删除角色成功`)
+                    this.getRoles()
+                }else{
+                    message.error(`删除角色失败`)
+                }
+            },
+        })
+    }
+
     componentWillMount() {
         this.initColumn()
         
@@ -163,19 +191,31 @@ class Role extends Component {
     }
 
     render() {
-        const {roles, role, isShowAdd, isShowAuth} = this.state
+        const {roles, role, isShowAdd, isShowAuth, loading} = this.state
         const title = (
             <span>
                 <Button type='primary' onClick={() => this.setState({isShowAdd: true})}>创建角色</Button>&nbsp;&nbsp;&nbsp;
                 <Button type='primary' disabled={!role._id} onClick={() => this.setState({isShowAuth: true})}>设置角色权限</Button>
             </span>
         )
+        const extra = (
+            <span>
+                <Button
+                    type='primary'
+                    disabled={!role._id}
+                    onClick={()=>this.deleteRole(role)}
+                >
+                    删除角色
+                </Button>
+            </span>
+        )
 
         return (
-            <Card title={title}>
+            <Card title={title} extra={extra}>
                 <Table
                     bordered
                     rowKey='_id'
+                    loading={loading}
                     dataSource={roles}
                     columns={this.columns}
                     pagination={{defaultPageSize: PAGE_SIZE, showQuickJumper: true}}
@@ -200,7 +240,7 @@ class Role extends Component {
                         this.form.resetFields()
                     }}
                 >
-                    <AddForm
+                    <AddUpdate
                         setForm={(form) => this.form = form}
                     />
                 </Modal>

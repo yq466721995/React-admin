@@ -13,6 +13,7 @@ import User from '../user'
 import Bar from '../charts/bar'
 import Line from '../charts/line'
 import Pie from '../charts/pie'
+import Order from '../order'
 import NotFound from '../not-found'
 
 const { Footer, Sider, Content } = Layout; 
@@ -51,6 +52,7 @@ class Admin extends Component{
                             <Route path='/charts/bar' component={Bar}/>
                             <Route path='/charts/line' component={Line}/>
                             <Route path='/charts/pie' component={Pie}/>
+                            <Route path='/order' component={Order}/>
                             <Route component={NotFound}/>   {/* 以上都匹配不到，显示not-found页面 */}
                         </Switch>
                     </Content>

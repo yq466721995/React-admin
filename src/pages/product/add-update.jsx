@@ -252,10 +252,10 @@ export default class ProductAddUpdate extends Component {
                 <Form {...formItemLayout} ref={this.formRef}>
                     <Item 
                         name='name' 
-                        label='商品名称:' 
+                        label='商品名称:'
                         initialValue={product.name}
                         rules={[
-                            {required: true, message: '必须输入商品名称'}
+                            {required: true, message: '必须输入商品名称',}
                         ]}
                     >
                         <Input placeholder='请输入商品名称' allowClear />

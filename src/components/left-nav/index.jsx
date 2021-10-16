@@ -130,6 +130,10 @@ class LeftNav extends Component {
             path = '/product'
         }
 
+        if(path.indexOf('/order')===0){   //当前请求的是订单或其子路由界面
+            path = '/order'
+        }
+
         //得到需要打开菜单项的key
         const openKey = this.openKey
         // console.log(openKey)
