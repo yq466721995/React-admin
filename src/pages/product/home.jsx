@@ -5,19 +5,15 @@ import {
     Input,
     Button,
     Table,
-    message, Modal,
+    message,
 } from 'antd'
 
 import {
-    PlusOutlined,
-    EyeOutlined,
-    DeleteOutlined,
-    EditOutlined,
-    ExclamationCircleOutlined
+    PlusOutlined
 } from '@ant-design/icons'
 
 import LinkButton from '../../components/link-button'
-import { reqProducts, reqSearchProducts, reqUpdateStatus, reqDeleteProduct} from '../../api/index'
+import { reqProducts, reqSearchProducts, reqUpdateStatus } from '../../api/index'
 import {PAGE_SIZE} from '../../utils/constants'
 
 const Option = Select.Option
@@ -77,7 +73,7 @@ export default class ProductHome extends Component {
                 }
             },
             {
-                width: 115,
+                width: 100,
                 title: '操作',
                 render: (product) => {
                     return (
@@ -86,17 +82,12 @@ export default class ProductHome extends Component {
                             <LinkButton 
                                 onClick={ () => this.props.history.push('/product/detail', {product}) }
                             >
-                                <EyeOutlined />
+                                详情
                             </LinkButton>
                             <LinkButton 
                                 onClick={() => this.props.history.push('/product/addUpdate', product)}
                             >
-                                <EditOutlined />
-                            </LinkButton>
-                            <LinkButton
-                                onClick={() => this.deleteProduct(product)}
-                            >
-                                <DeleteOutlined />
+                                修改
                             </LinkButton>
                         </span>
                     )
@@ -131,27 +122,6 @@ export default class ProductHome extends Component {
             })
             console.log(list)
         }
-    }
-
-    deleteProduct = (product) => {
-        const {_id} = product
-        Modal.confirm({
-            title: '删除分类',
-            icon: <ExclamationCircleOutlined/>,
-            content: '确定删除吗？',
-            okText: '确定',
-            cancelText: '取消',
-            onOk: async () => {
-                const response = await reqDeleteProduct(_id)
-                const result = response.data
-                if (result.status === 0) {
-                    message.success('删除商品成功')
-                    this.getProducts(1)
-                } else {
-                    message.error('删除商品失败')
-                }
-            },
-        })
     }
 
     /* 

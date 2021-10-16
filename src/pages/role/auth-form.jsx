@@ -73,7 +73,7 @@ export default class AuthForm extends PureComponent {
         return (
             <div>
                 <Item label='角色名称:'>
-                    <Input value={role.name} disabled/>
+                    <Input value={role.name} disabled />
                 </Item>
                 <Item>
 

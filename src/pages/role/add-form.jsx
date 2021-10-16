@@ -7,7 +7,7 @@ import {
 
 const Item = Form.Item
 
-export default class AddUpdate extends Component {
+export default class AddForm extends Component {
 
     formRef = React.createRef()
 
