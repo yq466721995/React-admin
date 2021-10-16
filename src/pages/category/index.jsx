@@ -4,15 +4,16 @@ import {
     Button, 
     Table, 
     message,
-    Modal 
+    Modal
 } from 'antd' 
 import {
     PlusOutlined,
     ArrowRightOutlined,
+    ExclamationCircleOutlined
 } from '@ant-design/icons'
 
 import LinkButton from '../../components/link-button'
-import {reqCategorys, reqUpdateCategory, reqAddCategory} from '../../api'
+import {reqCategorys, reqUpdateCategory, reqAddCategory, reqDeleteCategory} from '../../api'
 import AddForm from './add-form'
 import UpdateForm from './update-form'
 /* 
@@ -44,7 +45,7 @@ export default class Category extends Component {
                       <LinkButton onClick={() => this.showUpdate(category)}>修改分类</LinkButton>
                       {/* 如何向事件回调函数传递参数：先定义一个匿名函数，在函数中调用处理的函数并传入数据 */}
                       {this.state.parentId === '0' ? <LinkButton onClick={ () => this.showSubCategorys(category) }>查看子分类</LinkButton> : null}
-                      {/* <LinkButton onClick={() => this.deleteCategory(category) }>删除分类</LinkButton> */}
+                       <LinkButton onClick={() => this.deleteCategory(category) }>删除分类</LinkButton>
                   </span>
               )
             },
@@ -115,7 +116,7 @@ export default class Category extends Component {
         })
     }
 
-    /* deleteCategory = (category) => {
+     deleteCategory = (category) => {
         const {_id} = category
         Modal.confirm({
             title: '删除分类',
@@ -128,25 +129,25 @@ export default class Category extends Component {
                 const result = response.data
                 if(result.status===0){
                     message.success('删除分类成功')
-                    this.getCategorys('0')
+                    this.getCategorys()
                 }else{
                     message.error('删除分类失败')
                 }
             },
         })
-    } */
+    }
     
     //显示删除分类
-    /* showDeleteCategory = (category) => {
+     /*showDeleteCategory = (category) => {
         this.removeCategory = category
         //显示确认框
         this.setState({
             showStatus: 3
         })
-    } */
+    }*/
 
     //删除分类
-    /* deleteCategory = async (category) => {
+     /*deleteCategory = async () => {
         const {_id} = this.removeCategory
         const response = await reqDeleteCategory(_id)
         const result = response.data
@@ -157,7 +158,7 @@ export default class Category extends Component {
             message.error('删除分类失败')
         }
         this.setState({showStatus: 0})
-    } */
+    }*/
     
     //响应点击取消：隐藏确认框
     handleCancel = () => {
@@ -324,14 +325,14 @@ export default class Category extends Component {
                 </Modal>
 
                 {/* 删除分类的确认框 */}
-                {/* <Modal title='删除分类' 
+                 {/*<Modal title='删除分类'
                     visible={showStatus===3}
                     okText='确认' 
                     cancelText='取消'
                     destroyOnClose={true}
                     onOk={this.deleteCategory} 
                     onCancel={this.handleCancel}>
-                </Modal> */}
+                </Modal>*/}
             </Card>
         )
     }
